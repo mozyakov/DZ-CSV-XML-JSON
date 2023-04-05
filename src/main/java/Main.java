@@ -17,8 +17,8 @@ public class Main {
             basket = new Basket(products, prices);
         }
 
+        ClientLog log = new ClientLog();
         while(true) {
-            //showPrice();
             System.out.println("Список возможных товаров для покупки");
             for (int i = 0; i < products.length; i++) {
                 System.out.println(products[i]  + " " + prices[i] + "руб/шт");
@@ -26,23 +26,18 @@ public class Main {
             System.out.println("Выбери товар и через пробел выбери его кол-во или введи 'end'");
             String input = scanner.nextLine(); //юзер вводит данные
             if ("end".equals(input)) {
+                log.exportAsCSV(new File("log.csv"));
                 break;
             }
             String[] parts = input.split(" ");
             int productNumber = Integer.parseInt(parts[0]) - 1; //номер товара
             int productCount = Integer.parseInt(parts[1]); //кол-во товара
             basket.addToCart(productNumber, productCount);
+            log.log(productNumber, productCount);
             basket.saveBin(saveFile);
         }
 
         basket.printCart();
     }
-
-//    public static void showPrice() { //содержимое этого метода можно положить в while, тогда этот метод не потребуется
-//        System.out.println("Список возможных товаров для покупки");
-//        for (int i = 0; i < products.length; i++) {
-//            System.out.println(products[i]  + " " + prices[i] + "руб/шт");
-//        }
-//    }
 
 }
