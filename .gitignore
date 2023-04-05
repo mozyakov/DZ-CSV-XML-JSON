@@ -3,6 +3,9 @@
 .idea
 /.idea
 
+basket.txt
+basket.bin
+
 #папки для автогенерируемых результатов сборки (out, позже - target)
 out/
 target/
