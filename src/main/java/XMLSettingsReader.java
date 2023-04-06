@@ -9,16 +9,16 @@ import java.io.File;
 import java.io.IOException;
 
 public class XMLSettingsReader {
-    boolean isLoad;
-    String loadFile;
-    String loadFormat;
+    final boolean isLoad;  //final потому что не будут изменяться
+    final String loadFile;
+    final String loadFormat;
 
-    boolean isSave;
-    String saveFile;
-    String saveFormat;
+    final boolean isSave;
+    final String saveFile;
+    final String saveFormat;
 
-    boolean isLog;
-    String logFile;
+    final boolean isLog;
+    final String logFile;
 
     public XMLSettingsReader(File xmlFile) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -30,14 +30,16 @@ public class XMLSettingsReader {
         Element saveSettings = (Element) root.getElementsByTagName("save").item(0);
         Element logSettings = (Element) root.getElementsByTagName("log").item(0);
 
-        //System.out.println(loadSettings.getTextContent());
         isLoad = Boolean.parseBoolean(loadSettings.getElementsByTagName("enabled").item(0).getTextContent());
         loadFile = loadSettings.getElementsByTagName("fileName").item(0).getTextContent();
         loadFormat = loadSettings.getElementsByTagName("format").item(0).getTextContent();
 
-        System.out.println(isLoad);
-        System.out.println(loadFile);
-        System.out.println(loadFormat);
+        isSave = Boolean.parseBoolean(saveSettings.getElementsByTagName("enabled").item(0).getTextContent());
+        saveFile = saveSettings.getElementsByTagName("fileName").item(0).getTextContent();
+        saveFormat = saveSettings.getElementsByTagName("format").item(0).getTextContent();
+
+        isLog = Boolean.parseBoolean(logSettings.getElementsByTagName("enabled").item(0).getTextContent());
+        logFile = logSettings.getElementsByTagName("fileName").item(0).getTextContent();
 
     }
 }
