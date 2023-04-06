@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.*;
 import java.util.Arrays;
 
@@ -67,6 +70,7 @@ public class Basket implements Serializable {
         }
         return basket;
     }
+
     public void saveBin(File file) {
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             oos.writeObject(this);
@@ -75,11 +79,38 @@ public class Basket implements Serializable {
             throw new RuntimeException(e);
         }
     }
+
     public static Basket loadFromBinFile(File file) {
         Basket basket = null;
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             basket = (Basket) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return basket;
+    }
+
+    public void saveJSON(File file) {
+        try(PrintWriter writer = new PrintWriter(file)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create(); //чтобы разбивать строку на столбики
+            String json = gson.toJson(this);
+            writer.print(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Basket loadFromJSONFile(File file) {
+        Basket basket = null;
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            StringBuilder builder = new StringBuilder();
+            String line = null;   //важно объявить переменную до первого применения
+            while((line = reader.readLine()) != null) {
+                builder.append(line); //добавление очередной строки
+            }
+            Gson gson = new Gson(); //создал объект Gson
+            basket = gson.fromJson(builder.toString(), Basket.class);   //де сериализация объекта
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return basket;

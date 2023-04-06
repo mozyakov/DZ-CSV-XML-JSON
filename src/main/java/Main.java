@@ -7,12 +7,13 @@ public class Main {
     static String[] products = {"Хлеб", "Квас", "Мясо"};
     static int[] prices = {10, 20, 30};
 
-    static File saveFile = new File("basket.bin");
+    static File saveFile = new File("basket.json");
 
     public static void main(String[] args) throws FileNotFoundException {
+
         Basket basket = null;
         if (saveFile.exists()) {
-            basket = Basket.loadFromBinFile(saveFile);
+            basket = Basket.loadFromJSONFile(saveFile);
         } else {
             basket = new Basket(products, prices);
         }
@@ -34,7 +35,7 @@ public class Main {
             int productCount = Integer.parseInt(parts[1]); //кол-во товара
             basket.addToCart(productNumber, productCount);
             log.log(productNumber, productCount);
-            basket.saveBin(saveFile);
+            basket.saveJSON(saveFile);
         }
 
         basket.printCart();
